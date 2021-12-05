@@ -1,0 +1,30 @@
+version: '3'
+services:
+  phpinfo:
+    image: actency/docker-apache-php
+    container_name: phpinfo
+    ports:
+      - 80:80
+    volumes:
+      - "$PWD":/var/www/html/
+    restart: always
+  mysql:
+    image: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    restart: always
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  portainer:
+    image: portainer/portainer:1.24.1-alpine
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/portainer_password:/tmp/portainer_password
+    command: -H unix:///var/run/docker.sock --no-auth
+    ports:
+      - 9000:9000
